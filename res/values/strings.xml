@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">sersanorSensors</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="s1">Acelerómetro</string>
+    <string name="s2">Sensor Luz</string>
+    <string name="s3">Sensor Orientación</string>
+    <string name="s4">Sensor Proximidad</string>
+    <string name="s5">Termómetro</string>
+    <string name="s6">Giroscopio</string>
+    <string name="s7">Sonómetro</string>
+    <string name="s8">Sensor Camp. Magnéticos</string>
+    <string name="s9">Barómetro</string>
+    <string name="title_activity_s1">Acelerómetro</string>
+    
+    <string name="n">Nombre:</string>
+    <string name="v">Vendedor:</string>
+    <string name="vs">Version:</string>
+	<string name="p">Consumo:</string>
+	
+	<string name="vx">x:</string>
+	<string name="vy">y:</string>
+	<string name="vz">z:</string>
+</resources>
