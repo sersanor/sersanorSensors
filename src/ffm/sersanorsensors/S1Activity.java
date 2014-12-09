@@ -33,6 +33,7 @@ public class S1Activity extends ActionBarActivity implements
 	Button On, Off, Visible, list;
 	ListView lv;
 	private Set<BluetoothDevice>pairedDevices;
+	Bluetooth bt;
 
 	protected void onResume() {
 		super.onResume();
@@ -164,7 +165,7 @@ public class S1Activity extends ActionBarActivity implements
 
 		ArrayList list = new ArrayList();
 		for (BluetoothDevice bt : pairedDevices)
-			list.add(bt.getName());
+			list.add(bt.getName()+bt.getAddress());
 
 		Toast.makeText(getApplicationContext(), "Showing Paired Devices",
 				Toast.LENGTH_SHORT).show();
@@ -172,5 +173,10 @@ public class S1Activity extends ActionBarActivity implements
 				android.R.layout.simple_list_item_1, list);
 		lv.setAdapter(adapter);
 
+	}
+	
+	public void sendData(View view){
+		
+		
 	}
 }
