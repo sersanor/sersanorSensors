@@ -233,7 +233,7 @@ public class S1Activity extends ActionBarActivity implements
 	
 	class transferData extends TimerTask {
 	    public void run() {
-			String tmp = "X: " + vx.getText().toString()+" Y: "+vy.getText().toString()+" Z: "+vz.getText().toString();
+			String tmp = "X: " + vx.getText().toString()+" Y: "+vy.getText().toString()+" Z: "+vz.getText().toString()+" s: 1 ";
 			bts.write(tmp.getBytes());
 	    }
 	 }
