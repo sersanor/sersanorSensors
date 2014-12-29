@@ -1639,10 +1639,8 @@ containing a value of this type.
         public static final int Button02=0x7f050063;
         public static final int LinearLayout1=0x7f05003f;
         public static final int LinearLayout2=0x7f050052;
-        public static final int TextView01=0x7f05005d;
         public static final int TextView02=0x7f050057;
         public static final int TextView04=0x7f050055;
-        public static final int TextView05=0x7f05005b;
         public static final int TextView06=0x7f050053;
         public static final int action_bar=0x7f050031;
         public static final int action_bar_activity_content=0x7f050018;
@@ -1730,7 +1728,6 @@ containing a value of this type.
         public static final int submit_area=0x7f05003c;
         public static final int tabMode=0x7f050003;
         public static final int textView1=0x7f050059;
-        public static final int textView2=0x7f05005f;
         public static final int textView3=0x7f050061;
         public static final int title=0x7f050027;
         public static final int up=0x7f050016;
@@ -1740,6 +1737,9 @@ containing a value of this type.
         public static final int vzT=0x7f050060;
         public static final int withText=0x7f05000e;
         public static final int wrap_content=0x7f050000;
+        public static final int xLabel=0x7f05005b;
+        public static final int yLabel=0x7f05005d;
+        public static final int zLabel=0x7f05005f;
     }
     public static final class integer {
         /**  The maximum number of action buttons that should be permitted within
@@ -1792,11 +1792,17 @@ containing a value of this type.
         public static final int abc_simple_dropdown_hint=0x7f030016;
         public static final int activity_main=0x7f030017;
         public static final int activity_s1=0x7f030018;
-        public static final int support_simple_spinner_dropdown_item=0x7f030019;
+        public static final int activity_s2=0x7f030019;
+        public static final int activity_s4=0x7f03001a;
+        public static final int activity_s7=0x7f03001b;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
         public static final int s1=0x7f0c0001;
+        public static final int s2=0x7f0c0002;
+        public static final int s4=0x7f0c0003;
+        public static final int s7=0x7f0c0004;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1870,6 +1876,9 @@ containing a value of this type.
         public static final int s8=0x7f0a001a;
         public static final int s9=0x7f0a001b;
         public static final int title_activity_s1=0x7f0a001c;
+        public static final int title_activity_s2=0x7f0a0024;
+        public static final int title_activity_s4=0x7f0a0025;
+        public static final int title_activity_s7=0x7f0a0026;
         public static final int v=0x7f0a001e;
         public static final int vs=0x7f0a001f;
         public static final int vx=0x7f0a0021;

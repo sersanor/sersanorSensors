@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.support.v7.app.ActionBarActivity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -15,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
 	CheckBox s1,s2,s3,s4,s5,s6,s7,s8,s9;
 	Button b1,b2,b3,b4,b5,b6,b7,b8,b9;
 	private SensorManager mSensorManager;
+	BluetoothAdapter BA;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class MainActivity extends ActionBarActivity {
         checkSensors();
     }
     public void init(){
+    	BA = BluetoothAdapter.getDefaultAdapter();
+    	
     	s1 = (CheckBox)findViewById((R.id.s1_CB));
     	s2 = (CheckBox)findViewById((R.id.s2_CB));
     	s3 = (CheckBox)findViewById((R.id.s3_CB));
@@ -178,8 +183,42 @@ public class MainActivity extends ActionBarActivity {
     // LAUNCH NEW ACTIVITYS
     
     public void launchS1(View view){
+    	if(BA.isEnabled()){
     	Intent intent = new Intent(this, S1Activity.class);
     	startActivity(intent);
+    	}
+    	else
+    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
+			.show();
+    }
+    
+    public void launchS2(View view){
+    	if(BA.isEnabled()){
+    	Intent intent = new Intent(this, S2Activity.class);
+    	startActivity(intent);
+    	}
+    	else
+    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
+			.show();
+    }
+    
+    public void launchS4(View view){
+    	if(BA.isEnabled()){
+    	Intent intent = new Intent(this, S4Activity.class);
+    	startActivity(intent);
+    	}
+    	else
+    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
+			.show();
+    }
+    public void launchS7(View view){
+    	if(BA.isEnabled()){
+    	Intent intent = new Intent(this, S7Activity.class);
+    	startActivity(intent);
+    	}
+    	else
+    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
+			.show();
     }
     
     

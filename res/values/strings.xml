@@ -14,13 +14,15 @@
     <string name="s8">Sensor Camp. Magnéticos</string>
     <string name="s9">Barómetro</string>
     <string name="title_activity_s1">Acelerómetro</string>
-    
     <string name="n">Nombre:</string>
     <string name="v">Vendedor:</string>
     <string name="vs">Version:</string>
-	<string name="p">Consumo:</string>
-	
-	<string name="vx">x:</string>
-	<string name="vy">y:</string>
-	<string name="vz">z:</string>
+    <string name="p">Consumo:</string>
+    <string name="vx">x:</string>
+    <string name="vy">y:</string>
+    <string name="vz">z:</string>
+    <string name="title_activity_s2">S2Activity</string>
+    <string name="title_activity_s4">S4Activity</string>
+    <string name="title_activity_s7">S7Activity</string>
+
 </resources>

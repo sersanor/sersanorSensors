@@ -17,6 +17,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,38 +29,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class S1Activity extends ActionBarActivity implements
-		SensorEventListener {
+public class S7Activity extends ActionBarActivity {
 
 	private SensorManager senSensorManager;
-	private Sensor senAccelerometer;
+	private Sensor senLight;
 	private BluetoothAdapter BA;
-	TextView vx, vy, vz, name, vendor, version, power;
+	TextView vx, vy, vz, name, vendor, version, power, xlab, ylab, zlab;
 	Button On, Off, Visible, list;
 	ListView lv;
-	private Set<BluetoothDevice>pairedDevices;
+	private Set<BluetoothDevice> pairedDevices;
 	Bluetooth bts;
 	BluetoothDevice btServer;
-	private static final String TAG = "ACELERATOR";
+	private static final String TAG = "PROXIMITY";
 	private static final String MAC = "00:0E:A1:32:22:77";
 	private Handler myHandler;
-	Timer timer;
+	Timer timer, timer2;
 	private static final int SENDING = 0;
 	private static final int NSENDING = 1;
 	private static int state = NSENDING;
-
-
+	SoundMeter snd = null;
+	private double sound=0.0;
+	Handler mHandler = null;
 
 	protected void onResume() {
 		super.onResume();
-		senSensorManager.registerListener(this, senAccelerometer,
-				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	protected void onPause() {
 		super.onPause();
-		senSensorManager.unregisterListener(this);
 	}
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,31 +66,45 @@ public class S1Activity extends ActionBarActivity implements
 		setContentView(R.layout.activity_s1);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		init();
-		senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		senAccelerometer = senSensorManager
-				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		senSensorManager.registerListener(this, senAccelerometer,
-				SensorManager.SENSOR_DELAY_NORMAL);
-
 		sensorInfo();
 		server();
+
+		// HANDLER
+		mHandler = new Handler() {
+		    public void handleMessage(Message msg){
+		    	vx.setText(Integer.toString((int)sound)+" dB");
+		    }
+		    
+		};
+		
+		createSoundTask();
 	}
 
-	public void server (){
-		
-		if(BA == null) {this.finish(); Log.e("BLUETOOTH","NO BT ADAPTER");}
-		
+	public void createSoundTask() {
+		snd = new SoundMeter();
+		snd.start();
+		timer2 = new Timer();
+		timer2.schedule(new callSound(), 0, 200);
+	}
+
+	public void server() {
+
+		if (BA == null) {
+			this.finish();
+			Log.e("BLUETOOTH", "NO BT ADAPTER");
+		}
+
 		pairedDevices = BA.getBondedDevices();
-		for (BluetoothDevice bt : pairedDevices){
+		for (BluetoothDevice bt : pairedDevices) {
 			if (bt.getAddress().equals(MAC))
 				btServer = bt;
 		}
 		myHandler = new Handler();
-		bts = new Bluetooth(this,myHandler);
+		bts = new Bluetooth(this, myHandler);
 		bts.start();
 		bts.connect(btServer);
 	}
-	
+
 	public void init() {
 		vx = (TextView) findViewById(R.id.vxT);
 		vy = (TextView) findViewById(R.id.vyT);
@@ -108,16 +121,25 @@ public class S1Activity extends ActionBarActivity implements
 		list = (Button) findViewById(R.id.button04);
 		lv = (ListView) findViewById(R.id.listView1);
 		BA = BluetoothAdapter.getDefaultAdapter();
+		vy.setEnabled(false);
+		vz.setEnabled(false);
+
+		xlab = (TextView) findViewById(R.id.xLabel);
+		ylab = (TextView) findViewById(R.id.yLabel);
+		zlab = (TextView) findViewById(R.id.zLabel);
+		xlab.setText("Sound Level: ");
+		ylab.setText("");
+		ylab.setEnabled(false);
+		zlab.setText("");
+		zlab.setEnabled(false);
 	}
 
 	public void sensorInfo() {
-		SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-		Sensor acc = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-		name.setText(" " + acc.getName());
-		vendor.setText(" " + acc.getVendor());
-		version.setText(" " + Integer.toString(acc.getVersion()));
-		power.setText(" " + Float.toString(acc.getPower()) + " mA");
+		name.setText("---");
+		vendor.setText("---");
+		version.setText("---");
+		power.setText("---");
 	}
 
 	@Override
@@ -137,29 +159,6 @@ public class S1Activity extends ActionBarActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onSensorChanged(SensorEvent sensorEvent) {
-		// TODO Auto-generated method stub
-		Sensor mySensor = sensorEvent.sensor;
-		DecimalFormat dec = new DecimalFormat("0.000");
-
-		if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-			double x = sensorEvent.values[0];
-			double y = sensorEvent.values[1];
-			double z = sensorEvent.values[2];
-
-			vx.setText(dec.format(x));
-			vy.setText(dec.format(y));
-			vz.setText(dec.format(z));
-		}
 	}
 
 	public void captureBT(View view) {
@@ -196,8 +195,8 @@ public class S1Activity extends ActionBarActivity implements
 		pairedDevices = BA.getBondedDevices();
 
 		ArrayList list = new ArrayList();
-		for (BluetoothDevice bt : pairedDevices){
-			list.add(bt.getName()+bt.getAddress());
+		for (BluetoothDevice bt : pairedDevices) {
+			list.add(bt.getName() + bt.getAddress());
 		}
 		Toast.makeText(getApplicationContext(), "Showing Paired Devices",
 				Toast.LENGTH_SHORT).show();
@@ -206,35 +205,61 @@ public class S1Activity extends ActionBarActivity implements
 		lv.setAdapter(adapter);
 
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if(timer != null)
-		timer.cancel();
+		if (timer != null)
+			timer.cancel();
 		bts.stop();
+		if (timer2 != null)
+			timer2.cancel();
+		snd.stop();
 	}
 
-	public void sendData(View view){
-		if(bts != null){
-			switch(state){
-			case SENDING: 	timer.cancel();
-							state=NSENDING; 
-							break;
-			case NSENDING: 	timer = new Timer();
-			 				timer.schedule(new transferData(), 0, 250);
-			 				state=SENDING;
-			 				break;
+	public void sendData(View view) {
+		if (bts != null) {
+			switch (state) {
+			case SENDING:
+				timer.cancel();
+				state = NSENDING;
+				break;
+			case NSENDING:
+				timer = new Timer();
+				timer.schedule(new transferData(), 0, 250);
+				state = SENDING;
+				break;
 			}
 		}
+
+	}
+
+	class transferData extends TimerTask {
+		public void run() {
 			
+	    	String aux = vx.getText().toString();
+	    	String delims = "[ ]+";
+	        String[] tokens = aux.split(delims);
+	    	aux = tokens[0];
+			
+			String tmp = "SoundLevel: " + aux + " s: 7 "; // SENDS	INFO
+			bts.write(tmp.getBytes());
+		}
+	}
+
+	class callSound extends TimerTask {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if (snd != null){
+				sound = snd.getAmplitude();
+
+				mHandler.obtainMessage(1).sendToTarget();
+			}
+		}
+
 	}
 	
-	class transferData extends TimerTask {
-	    public void run() {
-			String tmp = "X: " + vx.getText().toString()+" Y: "+vy.getText().toString()+" Z: "+vz.getText().toString()+" s: 1 "; // SENDS ACC INFO
-			bts.write(tmp.getBytes());
-	    }
-	 }
 }

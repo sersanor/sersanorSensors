@@ -48,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS2"
             android:text="@string/s2" />
 
         <CheckBox
@@ -71,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS3"
             android:text="@string/s3" />
 
         <CheckBox
@@ -94,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS4"
             android:text="@string/s4" />
 
         <CheckBox
@@ -117,6 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS5"
             android:text="@string/s5" />
 
         <CheckBox
@@ -140,6 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS6"
             android:text="@string/s6" />
 
         <CheckBox
@@ -165,6 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS7"
             android:text="@string/s7" />
 
         <CheckBox
@@ -190,6 +196,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS8"
             android:text="@string/s8" />
 
         <CheckBox
@@ -215,6 +222,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:onClick="launchS9"
             android:text="@string/s9" />
 
         <CheckBox

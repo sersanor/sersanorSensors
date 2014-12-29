@@ -99,7 +99,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/TextView05"
+                android:id="@+id/xLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -119,7 +119,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/TextView01"
+                android:id="@+id/yLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -139,7 +139,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/zLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

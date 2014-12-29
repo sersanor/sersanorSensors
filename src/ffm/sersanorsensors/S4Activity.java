@@ -28,19 +28,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class S1Activity extends ActionBarActivity implements
+public class S4Activity extends ActionBarActivity implements
 		SensorEventListener {
 
 	private SensorManager senSensorManager;
-	private Sensor senAccelerometer;
+	private Sensor senLight;
 	private BluetoothAdapter BA;
-	TextView vx, vy, vz, name, vendor, version, power;
+	TextView vx, vy, vz, name, vendor, version, power, xlab,ylab,zlab;
 	Button On, Off, Visible, list;
 	ListView lv;
 	private Set<BluetoothDevice>pairedDevices;
 	Bluetooth bts;
 	BluetoothDevice btServer;
-	private static final String TAG = "ACELERATOR";
+	private static final String TAG = "PROXIMITY";
 	private static final String MAC = "00:0E:A1:32:22:77";
 	private Handler myHandler;
 	Timer timer;
@@ -52,7 +52,7 @@ public class S1Activity extends ActionBarActivity implements
 
 	protected void onResume() {
 		super.onResume();
-		senSensorManager.registerListener(this, senAccelerometer,
+		senSensorManager.registerListener(this, senLight,
 				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
@@ -68,9 +68,9 @@ public class S1Activity extends ActionBarActivity implements
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		init();
 		senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		senAccelerometer = senSensorManager
-				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		senSensorManager.registerListener(this, senAccelerometer,
+		senLight = senSensorManager
+				.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+		senSensorManager.registerListener(this, senLight,
 				SensorManager.SENSOR_DELAY_NORMAL);
 
 		sensorInfo();
@@ -108,11 +108,22 @@ public class S1Activity extends ActionBarActivity implements
 		list = (Button) findViewById(R.id.button04);
 		lv = (ListView) findViewById(R.id.listView1);
 		BA = BluetoothAdapter.getDefaultAdapter();
+		vy.setEnabled(false);
+		vz.setEnabled(false);
+		
+		xlab = (TextView)findViewById(R.id.xLabel);
+		ylab = (TextView)findViewById(R.id.yLabel);
+		zlab = (TextView)findViewById(R.id.zLabel);
+		xlab.setText("PROXIMITY Distance: ");
+		ylab.setText("");
+		ylab.setEnabled(false);
+		zlab.setText("");
+		zlab.setEnabled(false);
 	}
 
 	public void sensorInfo() {
 		SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-		Sensor acc = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		Sensor acc = sm.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
 		name.setText(" " + acc.getName());
 		vendor.setText(" " + acc.getVendor());
@@ -151,14 +162,10 @@ public class S1Activity extends ActionBarActivity implements
 		Sensor mySensor = sensorEvent.sensor;
 		DecimalFormat dec = new DecimalFormat("0.000");
 
-		if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+		if (mySensor.getType() == Sensor.TYPE_PROXIMITY) {
 			double x = sensorEvent.values[0];
-			double y = sensorEvent.values[1];
-			double z = sensorEvent.values[2];
 
-			vx.setText(dec.format(x));
-			vy.setText(dec.format(y));
-			vz.setText(dec.format(z));
+			vx.setText(dec.format(x) + " cm");
 		}
 	}
 
@@ -233,7 +240,12 @@ public class S1Activity extends ActionBarActivity implements
 	
 	class transferData extends TimerTask {
 	    public void run() {
-			String tmp = "X: " + vx.getText().toString()+" Y: "+vy.getText().toString()+" Z: "+vz.getText().toString()+" s: 1 "; // SENDS ACC INFO
+	    	String aux = vx.getText().toString();
+	    	String delims = "[ ]+";
+	        String[] tokens = aux.split(delims);
+	    	aux = tokens[0];
+	    	
+			String tmp = "PROXIMITY: " + aux +" s: 4 "; // SENDS PROXIMITY INFO
 			bts.write(tmp.getBytes());
 	    }
 	 }
