@@ -22,11 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class S4Activity extends ActionBarActivity implements
 		SensorEventListener {
@@ -41,7 +43,8 @@ public class S4Activity extends ActionBarActivity implements
 	Bluetooth bts;
 	BluetoothDevice btServer;
 	private static final String TAG = "PROXIMITY";
-	private static final String MAC = "00:0E:A1:32:22:77";
+	//private static final String MAC = "00:0E:A1:32:22:77"; // FIXED MAC
+	private static String MAC = null;
 	private Handler myHandler;
 	Timer timer;
 	private static final int SENDING = 0;
@@ -74,7 +77,6 @@ public class S4Activity extends ActionBarActivity implements
 				SensorManager.SENSOR_DELAY_NORMAL);
 
 		sensorInfo();
-		server();
 	}
 
 	public void server (){
@@ -211,16 +213,27 @@ public class S4Activity extends ActionBarActivity implements
 		final ArrayAdapter adapter = new ArrayAdapter(this,
 				android.R.layout.simple_list_item_1, list);
 		lv.setAdapter(adapter);
+		lv.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				String item = ((TextView)view).getText().toString();
+				String[] aux = item.split("\\\n");
+				MAC = aux[1];
+				Log.i("MAC", MAC);
+				if(MAC!=null)server();
+			}
+		
+		});
 	}
 	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if(timer != null)
-		timer.cancel();
-		bts.stop();
+		if(timer != null)timer.cancel();
+		if(bts != null)bts.stop();
 	}
 
 	public void sendData(View view){

@@ -183,42 +183,30 @@ public class MainActivity extends ActionBarActivity {
     // LAUNCH NEW ACTIVITYS
     
     public void launchS1(View view){
-    	if(BA.isEnabled()){
+    	
     	Intent intent = new Intent(this, S1Activity.class);
     	startActivity(intent);
-    	}
-    	else
-    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
-			.show();
+
     }
     
     public void launchS2(View view){
-    	if(BA.isEnabled()){
+    	
     	Intent intent = new Intent(this, S2Activity.class);
     	startActivity(intent);
-    	}
-    	else
-    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
-			.show();
+    	
     }
     
     public void launchS4(View view){
-    	if(BA.isEnabled()){
+    	
     	Intent intent = new Intent(this, S4Activity.class);
     	startActivity(intent);
-    	}
-    	else
-    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
-			.show();
+    	
     }
     public void launchS7(View view){
-    	if(BA.isEnabled()){
+    	
     	Intent intent = new Intent(this, S7Activity.class);
     	startActivity(intent);
-    	}
-    	else
-    		Toast.makeText(getApplicationContext(), "Bluetooth OFF", Toast.LENGTH_LONG)
-			.show();
+    
     }
     
     

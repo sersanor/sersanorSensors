@@ -21,7 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -41,7 +44,8 @@ public class S1Activity extends ActionBarActivity implements
 	Bluetooth bts;
 	BluetoothDevice btServer;
 	private static final String TAG = "ACELERATOR";
-	private static final String MAC = "00:0E:A1:32:22:77";
+	//private static final String MAC = "00:0E:A1:32:22:77"; // FIXED MAC
+	private static String MAC = null;
 	private Handler myHandler;
 	Timer timer;
 	private static final int SENDING = 0;
@@ -74,7 +78,7 @@ public class S1Activity extends ActionBarActivity implements
 				SensorManager.SENSOR_DELAY_NORMAL);
 
 		sensorInfo();
-		server();
+		//server();
 	}
 
 	public void server (){
@@ -197,13 +201,29 @@ public class S1Activity extends ActionBarActivity implements
 
 		ArrayList list = new ArrayList();
 		for (BluetoothDevice bt : pairedDevices){
-			list.add(bt.getName()+bt.getAddress());
+			list.add(bt.getName()+"\n"+bt.getAddress());
 		}
 		Toast.makeText(getApplicationContext(), "Showing Paired Devices",
 				Toast.LENGTH_SHORT).show();
 		final ArrayAdapter adapter = new ArrayAdapter(this,
 				android.R.layout.simple_list_item_1, list);
 		lv.setAdapter(adapter);
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				String item = ((TextView)view).getText().toString();
+				String[] aux = item.split("\\\n");
+				MAC = aux[1];
+				Log.i("MAC", MAC);
+				if(MAC!=null)server();
+			}
+		
+		});
+		
+
 
 	}
 	
@@ -211,12 +231,16 @@ public class S1Activity extends ActionBarActivity implements
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if(timer != null)
-		timer.cancel();
-		bts.stop();
+		if(timer != null)timer.cancel();
+		if(bts != null)bts.stop();
 	}
 
 	public void sendData(View view){
+		if(MAC==null){ 
+			Toast.makeText(getApplicationContext(), "Select a Server from Paired Devices", Toast.LENGTH_LONG)
+			.show();
+			return;
+			}
 		if(bts != null){
 			switch(state){
 			case SENDING: 	timer.cancel();
